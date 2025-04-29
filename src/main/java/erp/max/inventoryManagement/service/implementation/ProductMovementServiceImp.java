@@ -1,23 +1,32 @@
 package erp.max.inventoryManagement.service.implementation;
 
+import erp.max.inventoryManagement.dto.ProductDTO;
 import erp.max.inventoryManagement.dto.ProductMovementDTO;
 import erp.max.inventoryManagement.mapper.ProductMovementMapper;
+import erp.max.inventoryManagement.model.Location;
+import erp.max.inventoryManagement.model.Product;
 import erp.max.inventoryManagement.model.ProductMovement;
+import erp.max.inventoryManagement.repository.LocationRepository;
 import erp.max.inventoryManagement.repository.ProductMovementRepository;
 import erp.max.inventoryManagement.repository.ProductRepository;
 import erp.max.inventoryManagement.service.ProductMovementService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class ProductMovementServiceImp implements ProductMovementService {
     private final ProductMovementRepository productRepo;
-
-    public ProductMovementServiceImp(ProductMovementRepository productRepo) {
+    private final ProductRepository prodRepo;
+    private final LocationRepository locRepo;
+    public ProductMovementServiceImp(ProductMovementRepository productRepo, ProductRepository prodRepo, LocationRepository locRepo) {
         this.productRepo = productRepo;
+        this.prodRepo = prodRepo;
+        this.locRepo = locRepo;
     }
 
 
@@ -37,17 +46,25 @@ public class ProductMovementServiceImp implements ProductMovementService {
 
     @Override
     public ProductMovementDTO createProductMovement(ProductMovementDTO productMovementDTO) {
+        Optional<Product> prod = prodRepo.findById(productMovementDTO.getProductId());
+        if(prod.isEmpty())return null;
+        productMovementDTO.setMovementDate(Timestamp.from(Instant.now()));
         ProductMovement move = productRepo.save(ProductMovementMapper.mapToEntity(productMovementDTO));
         return ProductMovementMapper.mapToDTO(move);
     }
 
     @Override
     public ProductMovementDTO updateProductMovement(ProductMovementDTO productMovementDTO) {
-        Optional<ProductMovement> product = productRepo.findById(productMovementDTO.getId());
-        if(product.isEmpty())return null;
-        productMovementDTO.setProductId(product.get().getProductId());
-        productRepo.save(ProductMovementMapper.mapToEntity(productMovementDTO));
-        return productMovementDTO;
+        Optional<ProductMovement> productMove = productRepo.findById(productMovementDTO.getId());
+        Optional<Product> prod = prodRepo.findById(productMovementDTO.getProductId());
+        if(prod.isEmpty())return null;
+        if(productMove.isEmpty())return null;
+        productMove.get().setProductId(productMovementDTO.getProductId());
+        productMove.get().setFromLocation(productMovementDTO.getFromLocation());
+        productMove.get().setToLocation(productMovementDTO.getToLocation());
+        productMove.get().setQuantity(productMovementDTO.getQuantity());
+        productRepo.save(productMove.get());
+        return ProductMovementMapper.mapToDTO(productMove.get());
     }
 
 

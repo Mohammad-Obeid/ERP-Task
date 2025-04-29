@@ -38,7 +38,7 @@ public class LocationController {
         return new ResponseEntity<>(loc,HttpStatus.CREATED);
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Boolean> deleteLocation(@PathVariable("id)") String id){
+    public ResponseEntity<Boolean> deleteLocation(@PathVariable("id") String id){
         boolean deleted = locService.deleteLocation(id);
         if(!deleted)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -3,6 +3,7 @@ package erp.max.inventoryManagement.model;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 
 @Table
 @Entity
@@ -13,9 +14,9 @@ public class ProductMovement {
     private String id;
     @Column(nullable = false, name = "movement_date")
     private Timestamp movementDate;
-    @Column(nullable = false, name = "to_location")
+    @Column(name = "to_location")
     private String toLocation;
-    @Column(nullable = false, name = "from_location")
+    @Column(name = "from_location")
     private String fromLocation;
     @Column(nullable = false, name = "product_id")
     private String productId;
@@ -27,7 +28,7 @@ public class ProductMovement {
 
     public ProductMovement(String id, Timestamp movementDate, String toLocation, String fromLocation, String productId, String quantity) {
         this.id = id;
-        this.movementDate = Timestamp.from(movementDate.toInstant());
+        this.movementDate = Timestamp.from(Instant.now());
         this.toLocation = toLocation;
         this.fromLocation = fromLocation;
         this.productId = productId;
@@ -47,7 +48,7 @@ public class ProductMovement {
     }
 
     public void setMovementDate(Timestamp movementDate) {
-        this.movementDate = Timestamp.from(movementDate.toInstant());
+        this.movementDate = Timestamp.from(Instant.now());
     }
 
     public String getToLocation() {
