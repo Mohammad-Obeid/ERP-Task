@@ -1,6 +1,7 @@
 package erp.max.inventoryManagement.dto;
-import java.sql.Timestamp;
+import lombok.Builder;
 
+import java.sql.Timestamp;
 public class ProductMovementDTO {
     private String id;
     private Timestamp movementDate;
