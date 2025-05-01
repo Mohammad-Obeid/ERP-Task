@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.controller;
 
+import erp.max.inventoryManagement.JsonResponse.LocationResponse;
 import erp.max.inventoryManagement.dto.LocationDTO;
 import erp.max.inventoryManagement.service.implementation.LocationServiceImp;
 import org.springframework.http.HttpStatus;
@@ -24,9 +25,9 @@ public class LocationController {
         return new ResponseEntity<>(loc,HttpStatus.OK);
     }
     @GetMapping()
-    public ResponseEntity<List<LocationDTO>> getLocations(@RequestParam (name = "page", defaultValue = "0") int pageNum){
-        List<LocationDTO> locs = locService.getAllLocations(pageNum);
-        if(locs.isEmpty())
+    public ResponseEntity<LocationResponse> getLocations(@RequestParam (name = "page", defaultValue = "0") int pageNum){
+        LocationResponse locs = locService.getAllLocations(pageNum);
+        if(locs.getLocations().isEmpty())
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(locService.getAllLocations(pageNum), HttpStatus.OK);
     }

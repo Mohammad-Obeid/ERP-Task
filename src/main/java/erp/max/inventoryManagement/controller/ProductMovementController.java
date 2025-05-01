@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.controller;
 
+import erp.max.inventoryManagement.JsonResponse.MovesResponse;
 import erp.max.inventoryManagement.dto.ProductDTO;
 import erp.max.inventoryManagement.dto.ProductMovementDTO;
 import erp.max.inventoryManagement.service.implementation.ProductMovementServiceImp;
@@ -28,9 +29,9 @@ public class ProductMovementController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ProductMovementDTO>> getMovements(@RequestParam(name = "page",defaultValue = "0") int pageNum){
-        List<ProductMovementDTO> moves = prodService.getAllProductMovements(pageNum);
-        if(moves.isEmpty()){
+    public ResponseEntity<MovesResponse> getMovements(@RequestParam(name = "page",defaultValue = "0") int pageNum){
+        MovesResponse moves = prodService.getAllProductMovements(pageNum);
+        if(moves.getMoves().isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(moves, HttpStatus.OK);

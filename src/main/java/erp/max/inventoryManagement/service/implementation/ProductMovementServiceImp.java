@@ -1,9 +1,8 @@
 package erp.max.inventoryManagement.service.implementation;
 
-import erp.max.inventoryManagement.dto.ProductDTO;
+import erp.max.inventoryManagement.JsonResponse.MovesResponse;
 import erp.max.inventoryManagement.dto.ProductMovementDTO;
 import erp.max.inventoryManagement.mapper.ProductMovementMapper;
-import erp.max.inventoryManagement.model.Location;
 import erp.max.inventoryManagement.model.Product;
 import erp.max.inventoryManagement.model.ProductMovement;
 import erp.max.inventoryManagement.repository.LocationRepository;
@@ -38,11 +37,18 @@ public class ProductMovementServiceImp implements ProductMovementService {
     }
 
     @Override
-    public List<ProductMovementDTO> getAllProductMovements(int page) {
-        return productRepo.findAll(PageRequest.of(page,5))
-                .map(ProductMovementMapper::mapToDTO).stream().toList();
+    public List<ProductMovementDTO> getMovementsOfProductById(String id) {
+        Optional<List<ProductMovement>> prods = productRepo.findByProductId(id);
+        if(prods.isEmpty())return null;
+        List<ProductMovementDTO> products = prods.get().stream().map(ProductMovementMapper::mapToDTO).toList();
+        return products;
     }
 
+    @Override
+    public MovesResponse getAllProductMovements(int page) {
+        return new MovesResponse(productRepo.findAll(PageRequest.of(page,5))
+                .map(ProductMovementMapper::mapToDTO).stream().toList(),page);
+    }
 
     @Override
     public ProductMovementDTO createProductMovement(ProductMovementDTO productMovementDTO) {
@@ -66,7 +72,6 @@ public class ProductMovementServiceImp implements ProductMovementService {
         productRepo.save(productMove.get());
         return ProductMovementMapper.mapToDTO(productMove.get());
     }
-
 
 
 //    @Override

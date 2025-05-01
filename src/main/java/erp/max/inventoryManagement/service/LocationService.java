@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.service;
 
+import erp.max.inventoryManagement.JsonResponse.LocationResponse;
 import erp.max.inventoryManagement.dto.LocationDTO;
 
 import java.util.List;
@@ -7,6 +8,6 @@ import java.util.List;
 public interface LocationService {
     LocationDTO getLocationById(String id);
     LocationDTO createLocation(LocationDTO locationDTO);
-    List<LocationDTO> getAllLocations(int page);
+    LocationResponse getAllLocations(int page);
     boolean deleteLocation(String id);
 }

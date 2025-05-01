@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.controller;
 
+import erp.max.inventoryManagement.JsonResponse.ProductResponse;
 import erp.max.inventoryManagement.dto.ProductDTO;
 import erp.max.inventoryManagement.service.implementation.ProductServiceImp;
 import org.springframework.http.HttpStatusCode;
@@ -7,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+//@CrossOrigin(origins = "http://127.0.0.1:5500")
 @RestController
 @RequestMapping("/api/v1/product")
 public class ProductController {
@@ -24,7 +25,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<List<ProductDTO>> getAllProducts(@RequestParam(name = "page", defaultValue = "0") int page){
+    public ResponseEntity<ProductResponse> getAllProducts(@RequestParam(name = "page", defaultValue = "0") int page){
         return new ResponseEntity<>(prodService.getAllProducts(page), HttpStatusCode.valueOf(200));
     }
 

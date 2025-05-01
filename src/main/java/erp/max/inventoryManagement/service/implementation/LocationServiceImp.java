@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.service.implementation;
 
+import erp.max.inventoryManagement.JsonResponse.LocationResponse;
 import erp.max.inventoryManagement.dto.LocationDTO;
 import erp.max.inventoryManagement.mapper.LocationMapper;
 import erp.max.inventoryManagement.model.Location;
@@ -37,9 +38,9 @@ public class LocationServiceImp implements LocationService {
     }
 
     @Override
-    public List<LocationDTO> getAllLocations(int page) {
-        return locRepo.findAll(PageRequest.of(page,5)).stream()
-                .map(LocationMapper::mapToDTO).toList();
+    public LocationResponse getAllLocations(int page) {
+        return new LocationResponse(locRepo.findAll(PageRequest.of(page,5)).stream()
+                .map(LocationMapper::mapToDTO).toList(),page);
     }
 
     @Override

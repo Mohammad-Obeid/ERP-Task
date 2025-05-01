@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.service.implementation;
 
+import erp.max.inventoryManagement.JsonResponse.ProductResponse;
 import erp.max.inventoryManagement.dto.ProductDTO;
 import erp.max.inventoryManagement.mapper.ProductMapper;
 import erp.max.inventoryManagement.model.Product;
@@ -55,9 +56,9 @@ public class ProductServiceImp implements ProductService {
 
 
     @Override
-    public List<ProductDTO> getAllProducts(int pageNum) {
-        return prodRepo.findAll(PageRequest.of(pageNum, 5)).stream()
+    public ProductResponse getAllProducts(int pageNum) {
+        return new ProductResponse(prodRepo.findAll(PageRequest.of(pageNum, 6)).stream()
                 .map(ProductMapper::MapToDTO)
-                .toList();
+                .toList(), pageNum);
     }
 }

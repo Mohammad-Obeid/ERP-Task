@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.service;
 
+import erp.max.inventoryManagement.JsonResponse.ProductResponse;
 import erp.max.inventoryManagement.dto.ProductDTO;
 
 import java.util.List;
@@ -9,5 +10,5 @@ public interface ProductService {
     ProductDTO updateProduct(ProductDTO productDTO);
     ProductDTO getProductById(String id);
 //    ProductDTO getProductByBarcode(String barcode);
-    List<ProductDTO> getAllProducts(int page);
+    ProductResponse getAllProducts(int page);
 }
