@@ -8,12 +8,12 @@ public class ProductMovementDTO {
     private String toLocation;
     private String fromLocation;
     private String productId;
-    private String quantity;
+    private int quantity;
 
     public ProductMovementDTO() {
     }
 
-    public ProductMovementDTO(String id, Timestamp movementDate, String toLocation, String fromLocation, String productId, String quantity) {
+    public ProductMovementDTO(String id, Timestamp movementDate, String toLocation, String fromLocation, String productId, int quantity) {
         this.id = id;
         this.movementDate = Timestamp.from(movementDate.toInstant());
         this.toLocation = toLocation;
@@ -62,10 +62,10 @@ public class ProductMovementDTO {
         this.productId = productId;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }

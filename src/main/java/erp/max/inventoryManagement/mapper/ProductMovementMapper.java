@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.mapper;
 
+import erp.max.inventoryManagement.JsonResponse.ProductBalance;
 import erp.max.inventoryManagement.dto.ProductMovementDTO;
 import erp.max.inventoryManagement.model.ProductMovement;
 
@@ -24,5 +25,12 @@ public class ProductMovementMapper {
                 product.getQuantity()
         );
     }
+//    public static ProductBalance mapToProductBalance(ProductMovement productMove){
+//        return new ProductBalance(
+//                productMove.getProductId(),
+//                productMove.getToLocation(),
+//                productMove.getQuantity()
+//        );
+//    }
 }
 //        String id, Timestamp movementDate, String toLocation, String fromLocation, String productId, String quantity

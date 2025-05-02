@@ -21,12 +21,12 @@ public class ProductMovement {
     @Column(nullable = false, name = "product_id")
     private String productId;
     @Column(nullable = false, name = "quantity")
-    private String quantity;
+    private int quantity;
 
     public ProductMovement() {
     }
 
-    public ProductMovement(String id, Timestamp movementDate, String toLocation, String fromLocation, String productId, String quantity) {
+    public ProductMovement(String id, Timestamp movementDate, String toLocation, String fromLocation, String productId, int quantity) {
         this.id = id;
         this.movementDate = Timestamp.from(Instant.now());
         this.toLocation = toLocation;
@@ -75,11 +75,11 @@ public class ProductMovement {
         this.productId = productId;
     }
 
-    public String getQuantity() {
+    public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(String quantity) {
+    public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
 }

@@ -1,6 +1,7 @@
 package erp.max.inventoryManagement.service.implementation;
 
 import erp.max.inventoryManagement.JsonResponse.MovesResponse;
+import erp.max.inventoryManagement.JsonResponse.ProductBalance;
 import erp.max.inventoryManagement.dto.ProductMovementDTO;
 import erp.max.inventoryManagement.mapper.ProductMovementMapper;
 import erp.max.inventoryManagement.model.Product;
@@ -36,13 +37,24 @@ public class ProductMovementServiceImp implements ProductMovementService {
         return ProductMovementMapper.mapToDTO(product.get());
     }
 
+    //todo: develop this method
     @Override
-    public List<ProductMovementDTO> getMovementsOfProductById(String id) {
+    public List<ProductBalance> getProductBalance(String id) {
         Optional<List<ProductMovement>> prods = productRepo.findByProductId(id);
-        if(prods.isEmpty())return null;
-        List<ProductMovementDTO> products = prods.get().stream().map(ProductMovementMapper::mapToDTO).toList();
-        return products;
+
+        return prods.map(productMovements -> productMovements.stream()
+                .map(prod -> {
+                    Product product = prodRepo.findById(prod.getProductId()).orElse(null);
+                    String productName = product != null ? product.getProductName() : "Unknown";
+                    return new ProductBalance(
+                            productName,
+                            prod.getToLocation(),
+                            prod.getQuantity()
+                    );
+                })
+                .toList()).orElseGet(List::of);
     }
+
 
     @Override
     public MovesResponse getAllProductMovements(int page) {

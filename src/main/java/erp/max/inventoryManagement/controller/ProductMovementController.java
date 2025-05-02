@@ -1,6 +1,7 @@
 package erp.max.inventoryManagement.controller;
 
 import erp.max.inventoryManagement.JsonResponse.MovesResponse;
+import erp.max.inventoryManagement.JsonResponse.ProductBalance;
 import erp.max.inventoryManagement.dto.ProductDTO;
 import erp.max.inventoryManagement.dto.ProductMovementDTO;
 import erp.max.inventoryManagement.service.implementation.ProductMovementServiceImp;
@@ -52,5 +53,13 @@ public class ProductMovementController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(updatedMove, HttpStatus.OK);
+    }
+    @GetMapping("/product/{id}")
+    public ResponseEntity<List<ProductBalance>> getProductBalance(@PathVariable("id") String id){
+        List<ProductBalance> balance = prodService.getProductBalance(id);
+        if(balance.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(balance, HttpStatus.OK);
     }
 }
