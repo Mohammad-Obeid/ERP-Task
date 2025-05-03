@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.service;
 
+import erp.max.inventoryManagement.JsonResponse.LocationProductsResponse;
 import erp.max.inventoryManagement.JsonResponse.MovesResponse;
 import erp.max.inventoryManagement.JsonResponse.ProductBalance;
 import erp.max.inventoryManagement.dto.ProductMovementDTO;
@@ -12,5 +13,6 @@ public interface ProductMovementService {
     MovesResponse getAllProductMovements(int page);
     ProductMovementDTO createProductMovement(ProductMovementDTO productMovementDTO);
     ProductMovementDTO updateProductMovement(ProductMovementDTO productMovementDTO);
+    List<LocationProductsResponse> getLocationProducts(String id);
 //    boolean deleteProductMovement(String id);
 }

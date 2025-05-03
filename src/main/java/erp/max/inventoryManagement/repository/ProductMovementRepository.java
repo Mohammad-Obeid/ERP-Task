@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface ProductMovementRepository extends JpaRepository<ProductMovement, String> {
     Optional<List<ProductMovement>> findByProductId(String id);
+    Optional<List<ProductMovement>> findByToLocation(String id);
 }

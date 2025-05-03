@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.controller;
 
+import erp.max.inventoryManagement.JsonResponse.LocationProductsResponse;
 import erp.max.inventoryManagement.JsonResponse.MovesResponse;
 import erp.max.inventoryManagement.JsonResponse.ProductBalance;
 import erp.max.inventoryManagement.dto.ProductDTO;
@@ -46,6 +47,7 @@ public class ProductMovementController {
         }
         return new ResponseEntity<>(newMove, HttpStatus.CREATED);
     }
+    // todo: Change the saved data when updating ...
     @PatchMapping()
     public ResponseEntity<ProductMovementDTO> updateMove(@RequestBody ProductMovementDTO move){
         ProductMovementDTO updatedMove = prodService.updateProductMovement(move);
@@ -57,6 +59,14 @@ public class ProductMovementController {
     @GetMapping("/product/{id}")
     public ResponseEntity<List<ProductBalance>> getProductBalance(@PathVariable("id") String id){
         List<ProductBalance> balance = prodService.getProductBalance(id);
+        if(balance.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(balance, HttpStatus.OK);
+    }
+    @GetMapping("location/{id}")
+    public ResponseEntity<List<LocationProductsResponse>> getLocationProducts(@PathVariable("id") String id){
+        List<LocationProductsResponse> balance = prodService.getLocationProducts(id);
         if(balance.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

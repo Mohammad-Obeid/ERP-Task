@@ -1,5 +1,6 @@
 package erp.max.inventoryManagement.service.implementation;
 
+import erp.max.inventoryManagement.JsonResponse.LocationProductsResponse;
 import erp.max.inventoryManagement.JsonResponse.MovesResponse;
 import erp.max.inventoryManagement.JsonResponse.ProductBalance;
 import erp.max.inventoryManagement.dto.ProductMovementDTO;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,6 +85,18 @@ public class ProductMovementServiceImp implements ProductMovementService {
         productMove.get().setQuantity(productMovementDTO.getQuantity());
         productRepo.save(productMove.get());
         return ProductMovementMapper.mapToDTO(productMove.get());
+    }
+
+    @Override
+    public List<LocationProductsResponse> getLocationProducts(String loc) {
+        List<ProductMovement> prods = productRepo.findByToLocation(loc).orElse(Collections.emptyList());
+        return prods.stream().map(prod ->
+                new LocationProductsResponse(
+                        prod.getProductId(),
+                        prodRepo.findById(prod.getProductId()).get().getProductName(),
+                        prod.getQuantity()
+                )
+        ).toList();
     }
 
 
