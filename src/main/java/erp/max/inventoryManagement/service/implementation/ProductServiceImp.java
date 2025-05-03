@@ -4,6 +4,8 @@ import erp.max.inventoryManagement.JsonResponse.ProductResponse;
 import erp.max.inventoryManagement.dto.ProductDTO;
 import erp.max.inventoryManagement.mapper.ProductMapper;
 import erp.max.inventoryManagement.model.Product;
+import erp.max.inventoryManagement.model.ProductMovement;
+import erp.max.inventoryManagement.repository.ProductMovementRepository;
 import erp.max.inventoryManagement.repository.ProductRepository;
 import erp.max.inventoryManagement.service.ProductService;
 import org.springframework.data.domain.PageRequest;

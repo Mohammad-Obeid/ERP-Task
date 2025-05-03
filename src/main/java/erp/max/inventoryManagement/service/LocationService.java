@@ -10,4 +10,6 @@ public interface LocationService {
     LocationDTO createLocation(LocationDTO locationDTO);
     LocationResponse getAllLocations(int page);
     boolean deleteLocation(String id);
+    LocationResponse getAllLocations();
+    boolean updateLocation(LocationDTO locationDTO);
 }

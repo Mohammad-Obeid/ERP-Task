@@ -4,7 +4,9 @@ import erp.max.inventoryManagement.JsonResponse.LocationResponse;
 import erp.max.inventoryManagement.dto.LocationDTO;
 import erp.max.inventoryManagement.mapper.LocationMapper;
 import erp.max.inventoryManagement.model.Location;
+import erp.max.inventoryManagement.model.ProductMovement;
 import erp.max.inventoryManagement.repository.LocationRepository;
+import erp.max.inventoryManagement.repository.ProductMovementRepository;
 import erp.max.inventoryManagement.service.LocationService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -15,9 +17,10 @@ import java.util.Optional;
 @Service
 public class LocationServiceImp implements LocationService {
     private final LocationRepository locRepo;
-
-    public LocationServiceImp(LocationRepository locRepo) {
+    private final ProductMovementRepository moveRepo;
+    public LocationServiceImp(LocationRepository locRepo, ProductMovementRepository moveRepo) {
         this.locRepo = locRepo;
+        this.moveRepo = moveRepo;
     }
 
 
@@ -41,6 +44,37 @@ public class LocationServiceImp implements LocationService {
     public LocationResponse getAllLocations(int page) {
         return new LocationResponse(locRepo.findAll(PageRequest.of(page,5)).stream()
                 .map(LocationMapper::mapToDTO).toList(),page);
+    }
+
+    @Override
+    public LocationResponse getAllLocations() {
+        return new LocationResponse(locRepo.findAll().stream()
+                .map(LocationMapper::mapToDTO).toList(),0);
+    }
+
+    @Override
+    public boolean updateLocation(LocationDTO locationDTO) {
+        Optional<Location> loc = locRepo.findById(locationDTO.getId());
+        if(loc.isEmpty())
+            return false;
+        Location location = loc.get();
+        Optional<List<ProductMovement>> fromLocs = moveRepo.findByFromLocation(loc.get().getLocationName());
+        Optional<List<ProductMovement>> toLocs = moveRepo.findByToLocation(loc.get().getLocationName());
+        for(int i=0;i<fromLocs.get().size();i++){
+            fromLocs.get().get(i).setFromLocation(locationDTO.getLocationName());
+            moveRepo.save(fromLocs.get().get(i));
+        }
+
+        for(int i=0;i<toLocs.get().size();i++){
+            toLocs.get().get(i).setToLocation(locationDTO.getLocationName());
+            moveRepo.save(toLocs.get().get(i));
+        }
+
+        location.setLocationCode(locationDTO.getLocationCode());
+        location.setLocationName(locationDTO.getLocationName());
+        locRepo.save(location);
+
+        return true;
     }
 
     @Override

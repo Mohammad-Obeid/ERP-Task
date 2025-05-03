@@ -31,6 +31,14 @@ public class LocationController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(locService.getAllLocations(pageNum), HttpStatus.OK);
     }
+
+    @GetMapping("/list")
+    public ResponseEntity<LocationResponse> getAllLocations(){
+        LocationResponse locs = locService.getAllLocations();
+        if(locs.getLocations().isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(locService.getAllLocations(), HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<LocationDTO> CreateLocation(@RequestBody LocationDTO location){
         LocationDTO loc = locService.createLocation(location);

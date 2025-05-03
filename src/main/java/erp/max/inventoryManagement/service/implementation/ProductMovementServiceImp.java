@@ -83,6 +83,7 @@ public class ProductMovementServiceImp implements ProductMovementService {
         productMove.get().setFromLocation(productMovementDTO.getFromLocation());
         productMove.get().setToLocation(productMovementDTO.getToLocation());
         productMove.get().setQuantity(productMovementDTO.getQuantity());
+        productMove.get().setMovementDate(Timestamp.from(Instant.now()));
         productRepo.save(productMove.get());
         return ProductMovementMapper.mapToDTO(productMove.get());
     }
