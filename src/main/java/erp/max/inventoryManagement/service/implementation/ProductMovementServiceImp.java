@@ -60,8 +60,10 @@ public class ProductMovementServiceImp implements ProductMovementService {
 
     @Override
     public MovesResponse getAllProductMovements(int page) {
+        long numOfPages = productRepo.count();
+        numOfPages /= 5;
         return new MovesResponse(productRepo.findAll(PageRequest.of(page,5))
-                .map(ProductMovementMapper::mapToDTO).stream().toList(),page);
+                .map(ProductMovementMapper::mapToDTO).stream().toList(),page,numOfPages);
     }
 
     @Override

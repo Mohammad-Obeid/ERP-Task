@@ -42,14 +42,16 @@ public class LocationServiceImp implements LocationService {
 
     @Override
     public LocationResponse getAllLocations(int page) {
+        Long numOfPages = locRepo.count();
+        numOfPages = numOfPages/6;
         return new LocationResponse(locRepo.findAll(PageRequest.of(page,6)).stream()
-                .map(LocationMapper::mapToDTO).toList(),page);
+                .map(LocationMapper::mapToDTO).toList(),page,numOfPages.intValue());
     }
 
     @Override
     public LocationResponse getAllLocations() {
         return new LocationResponse(locRepo.findAll().stream()
-                .map(LocationMapper::mapToDTO).toList(),0);
+                .map(LocationMapper::mapToDTO).toList(),0,0);
     }
 
     @Override

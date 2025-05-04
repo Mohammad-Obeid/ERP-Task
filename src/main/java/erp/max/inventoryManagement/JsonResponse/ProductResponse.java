@@ -7,13 +7,15 @@ import java.util.List;
 public class ProductResponse {
     private List<ProductDTO> products;
     private int PageNum;
+    public long numOfPages;
 
     public ProductResponse() {
     }
 
-    public ProductResponse(List<ProductDTO> products, int pageNum) {
+    public ProductResponse(List<ProductDTO> products, int pageNum, long numOfPages) {
         this.products = products;
-        PageNum = pageNum;
+        this.PageNum = pageNum;
+        this.numOfPages=numOfPages;
     }
 
     public List<ProductDTO> getProducts() {
@@ -32,4 +34,11 @@ public class ProductResponse {
         PageNum = pageNum;
     }
 
+    public long getNumOfPages() {
+        return numOfPages;
+    }
+
+    public void setNumOfPages(long NumOfPages) {
+        this.numOfPages = NumOfPages;
+    }
 }

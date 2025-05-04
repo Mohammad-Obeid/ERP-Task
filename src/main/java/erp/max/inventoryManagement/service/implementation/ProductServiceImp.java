@@ -59,8 +59,10 @@ public class ProductServiceImp implements ProductService {
 
     @Override
     public ProductResponse getAllProducts(int pageNum) {
-        return new ProductResponse(prodRepo.findAll(PageRequest.of(pageNum, 6)).stream()
+        long numOfPages = prodRepo.count();
+        numOfPages /= 6;
+        return new ProductResponse(prodRepo.findAll(PageRequest.of(pageNum, 6))
                 .map(ProductMapper::MapToDTO)
-                .toList(), pageNum);
+                .toList(), pageNum, numOfPages);
     }
 }
