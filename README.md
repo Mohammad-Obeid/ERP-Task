@@ -30,7 +30,13 @@ This is the backend of the Inventory Management System built with Java and Sprin
 ├── service # Interfaces and Implementations for business logic
 
 
-**📷 Screenshots**
+**📷 Screenshots: **
+
+
+**System Architecture**
+
+![image](https://github.com/user-attachments/assets/90a363fe-3da1-4c81-a119-dabd17c8d74d)
+
 
 **Open APi:**
 
