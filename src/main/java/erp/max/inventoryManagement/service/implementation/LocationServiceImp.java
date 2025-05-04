@@ -55,6 +55,14 @@ public class LocationServiceImp implements LocationService {
     }
 
     @Override
+    public LocationResponse getAllLocationsExcept(String LocationCode) {
+        List<Location> locs = locRepo.findAll();
+        locs.removeIf(location -> location.getLocationCode().equals(LocationCode));
+        return new LocationResponse(locs.stream()
+                .map(LocationMapper::mapToDTO).toList(),0,0);
+    }
+
+    @Override
     public boolean updateLocation(LocationDTO locationDTO) {
         Optional<Location> loc = locRepo.findById(locationDTO.getId());
         if(loc.isEmpty() || !loc.get().getLocationCode().equals(locationDTO.getLocationCode()))

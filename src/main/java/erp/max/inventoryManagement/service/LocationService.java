@@ -11,5 +11,6 @@ public interface LocationService {
     LocationResponse getAllLocations(int page);
     boolean deleteLocation(String id);
     LocationResponse getAllLocations();
+    LocationResponse getAllLocationsExcept(String LocationCode);
     boolean updateLocation(LocationDTO locationDTO);
 }

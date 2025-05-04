@@ -1,6 +1,7 @@
 package erp.max.inventoryManagement.JsonResponse;
 
 public class LocationProductsResponse {
+    private String moveId;
     private String productId;
     private String productName;
     private int quantity;
@@ -8,7 +9,8 @@ public class LocationProductsResponse {
     public LocationProductsResponse() {
     }
 
-    public LocationProductsResponse(String productId, String productName, int quantity) {
+    public LocationProductsResponse(String moveId,String productId, String productName, int quantity) {
+        this.moveId=moveId;
         this.productId = productId;
         this.productName = productName;
         this.quantity = quantity;
@@ -36,5 +38,13 @@ public class LocationProductsResponse {
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public String getMoveId() {
+        return moveId;
+    }
+
+    public void setMoveId(String moveId) {
+        this.moveId = moveId;
     }
 }

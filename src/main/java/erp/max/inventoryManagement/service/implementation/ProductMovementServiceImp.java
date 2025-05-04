@@ -82,8 +82,10 @@ public class ProductMovementServiceImp implements ProductMovementService {
         if(prod.isEmpty())return null;
         if(productMove.isEmpty())return null;
         productMove.get().setProductId(productMovementDTO.getProductId());
-        productMove.get().setFromLocation(productMovementDTO.getFromLocation());
-        productMove.get().setToLocation(productMovementDTO.getToLocation());
+        if(productMovementDTO.getFromLocation() != null)
+            productMove.get().setFromLocation(productMovementDTO.getFromLocation());
+        if(productMovementDTO.getToLocation() != null)
+            productMove.get().setToLocation(productMovementDTO.getToLocation());
         productMove.get().setQuantity(productMovementDTO.getQuantity());
         productMove.get().setMovementDate(Timestamp.from(Instant.now()));
         productRepo.save(productMove.get());
@@ -95,6 +97,7 @@ public class ProductMovementServiceImp implements ProductMovementService {
         List<ProductMovement> prods = productRepo.findByToLocation(loc).orElse(Collections.emptyList());
         return prods.stream().map(prod ->
                 new LocationProductsResponse(
+                        prod.getId(),
                         prod.getProductId(),
                         prodRepo.findById(prod.getProductId()).get().getProductName(),
                         prod.getQuantity()

@@ -39,6 +39,14 @@ public class LocationController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(locService.getAllLocations(), HttpStatus.OK);
     }
+
+    @GetMapping("/lists/{locationCode}")
+    public ResponseEntity<LocationResponse> getAllLocationsExcept(@PathVariable("locationCode") String locationCode){
+        LocationResponse locs = locService.getAllLocationsExcept(locationCode);
+        if(locs.getLocations().isEmpty())
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(locs, HttpStatus.OK);
+    }
     @PostMapping
     public ResponseEntity<LocationDTO> CreateLocation(@RequestBody LocationDTO location){
         LocationDTO loc = locService.createLocation(location);
