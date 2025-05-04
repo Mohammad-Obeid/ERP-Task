@@ -31,3 +31,17 @@ This is the backend of the Inventory Management System built with Java and Sprin
 
 
 **📷 Screenshots**
+
+**Open APi:**
+
+
+![image](https://github.com/user-attachments/assets/120c9f43-48e6-49aa-b03f-a8dc7f420186)
+
+
+
+Example on API Response and Request Bodies:
+
+
+![image](https://github.com/user-attachments/assets/171cee12-508e-47dd-a51f-2a7ac51db0ea)
+
+
