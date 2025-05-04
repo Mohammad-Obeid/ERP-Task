@@ -52,9 +52,12 @@ public class LocationController {
         if(!deleted)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(deleted,HttpStatus.OK);
-
-
-
-
+    }
+    @PatchMapping()
+    public ResponseEntity<Boolean> updateLocation(@RequestBody LocationDTO location){
+        boolean updated = locService.updateLocation(location);
+        if(!updated)
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(updated,HttpStatus.OK);
     }
 }

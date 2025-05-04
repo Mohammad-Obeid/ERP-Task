@@ -42,7 +42,7 @@ public class LocationServiceImp implements LocationService {
 
     @Override
     public LocationResponse getAllLocations(int page) {
-        return new LocationResponse(locRepo.findAll(PageRequest.of(page,5)).stream()
+        return new LocationResponse(locRepo.findAll(PageRequest.of(page,6)).stream()
                 .map(LocationMapper::mapToDTO).toList(),page);
     }
 
@@ -55,8 +55,9 @@ public class LocationServiceImp implements LocationService {
     @Override
     public boolean updateLocation(LocationDTO locationDTO) {
         Optional<Location> loc = locRepo.findById(locationDTO.getId());
-        if(loc.isEmpty())
+        if(loc.isEmpty() || !loc.get().getLocationCode().equals(locationDTO.getLocationCode()))
             return false;
+
         Location location = loc.get();
         Optional<List<ProductMovement>> fromLocs = moveRepo.findByFromLocation(loc.get().getLocationName());
         Optional<List<ProductMovement>> toLocs = moveRepo.findByToLocation(loc.get().getLocationName());
