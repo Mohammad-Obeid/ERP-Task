@@ -110,9 +110,9 @@ public class ProductMovementServiceImp implements ProductMovementService {
     @Override
     public ProductMovementDTO updateProductMovement(ProductMovementDTO productMovementDTO) {
         Optional<ProductMovement> productMove = productRepo.findById(productMovementDTO.getId());
-        Optional<Product> prod = prodRepo.findById(productMovementDTO.getProductId());
-        if(prod.isEmpty())return null;
-        if(productMove.isEmpty())return null;
+//        Optional<Product> prod = prodRepo.findById(productMovementDTO.getProductId());
+//        if(prod.isEmpty())return null;
+//        if(productMove.isEmpty())return null;
         productMove.get().setProductId(productMovementDTO.getProductId());
         if(productMovementDTO.getFromLocation() != null)
             productMove.get().setFromLocation(productMovementDTO.getFromLocation());
