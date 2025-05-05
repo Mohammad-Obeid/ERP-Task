@@ -1,6 +1,7 @@
 package erp.max.inventoryManagement.service.implementation;
 
 import erp.max.inventoryManagement.JsonResponse.LocationProductsResponse;
+import erp.max.inventoryManagement.JsonResponse.MoveResponse2;
 import erp.max.inventoryManagement.JsonResponse.MovesResponse;
 import erp.max.inventoryManagement.JsonResponse.ProductBalance;
 import erp.max.inventoryManagement.dto.ProductMovementDTO;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -59,11 +61,41 @@ public class ProductMovementServiceImp implements ProductMovementService {
 
 
     @Override
-    public MovesResponse getAllProductMovements(int page) {
+    public MovesResponse getAllProductMovement(int page) {
+        List<Product> prods = prodRepo.findAll();
         long numOfPages = productRepo.count();
         numOfPages /= 5;
+        List<ProductMovement> productMovements = productRepo.findAll();
+
         return new MovesResponse(productRepo.findAll(PageRequest.of(page,5))
                 .map(ProductMovementMapper::mapToDTO).stream().toList(),page,numOfPages);
+    }
+
+    @Override
+    public MoveResponse2 getAllProductMovements(int page) {
+        List<Product> prods = prodRepo.findAll();
+
+        // Build full list of product balances
+        List<ProductBalance> res = new ArrayList<>();
+        for (Product product : prods) {
+            List<ProductBalance> prodB = getProductBalance(product.getId());
+            for (ProductBalance productBalance : prodB) {
+                if (productBalance.getProductName() != null) {
+                    res.add(productBalance);
+                }
+            }
+        }
+
+        // Manual pagination
+        int pageSize = 5;
+        int start = page * pageSize;
+        int end = Math.min(start + pageSize, res.size());
+        List<ProductBalance> paginatedRes = res.subList(start, end);
+
+        // Total number of pages
+        long numOfPages = (res.size() + pageSize - 1) / pageSize; // ceil
+
+        return new MoveResponse2(paginatedRes, page, numOfPages);
     }
 
     @Override

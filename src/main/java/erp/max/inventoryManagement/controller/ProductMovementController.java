@@ -1,6 +1,7 @@
 package erp.max.inventoryManagement.controller;
 
 import erp.max.inventoryManagement.JsonResponse.LocationProductsResponse;
+import erp.max.inventoryManagement.JsonResponse.MoveResponse2;
 import erp.max.inventoryManagement.JsonResponse.MovesResponse;
 import erp.max.inventoryManagement.JsonResponse.ProductBalance;
 import erp.max.inventoryManagement.dto.ProductDTO;
@@ -32,10 +33,16 @@ public class ProductMovementController {
 
     @GetMapping()
     public ResponseEntity<MovesResponse> getMovements(@RequestParam(name = "page",defaultValue = "0") int pageNum){
-        MovesResponse moves = prodService.getAllProductMovements(pageNum);
+        MovesResponse moves = prodService.getAllProductMovement(pageNum);
         if(moves.getMoves().isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(moves, HttpStatus.OK);
+    }
+    @GetMapping("/new")
+    public ResponseEntity<MoveResponse2> getMovementsnew(@RequestParam(name = "page",defaultValue = "0") int pageNum){
+        MoveResponse2 moves = prodService.getAllProductMovements(pageNum);
+
         return new ResponseEntity<>(moves, HttpStatus.OK);
     }
 
