@@ -45,18 +45,31 @@ public class ProductMovementServiceImp implements ProductMovementService {
     @Override
     public List<ProductBalance> getProductBalance(String id) {
         Optional<List<ProductMovement>> prods = productRepo.findByProductId(id);
+        List<ProductBalance> productBalances = new ArrayList<>();
+        for (int i=0;i<prods.get().size();i++){
+            Product product = prodRepo.findById(prods.get().get(i).getProductId()).orElse(null);
+            String productName = product != null ? product.getProductName() : "Unknown";
+            String location = prods.get().get(i).getToLocation();
+            int quantity = prods.get().get(i).getQuantity();
+            if(productBalances.isEmpty()){
+                productBalances.add(new ProductBalance(productName,location,quantity));
+            }else{
+                boolean found = false;
+                for (ProductBalance productBalance : productBalances) {
+                    if (productBalance.getProductName().equals(productName) && productBalance.getLocation().equals(location)) {
+                        productBalance.setQuantity(productBalance.getQuantity() + quantity);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    productBalances.add(new ProductBalance(productName, location, quantity));
+                }
+            }
+        }
 
-        return prods.map(productMovements -> productMovements.stream()
-                .map(prod -> {
-                    Product product = prodRepo.findById(prod.getProductId()).orElse(null);
-                    String productName = product != null ? product.getProductName() : "Unknown";
-                    return new ProductBalance(
-                            productName,
-                            prod.getToLocation(),
-                            prod.getQuantity()
-                    );
-                })
-                .toList()).orElseGet(List::of);
+
+       return productBalances;
     }
 
 
@@ -113,7 +126,7 @@ public class ProductMovementServiceImp implements ProductMovementService {
 //        Optional<Product> prod = prodRepo.findById(productMovementDTO.getProductId());
 //        if(prod.isEmpty())return null;
 //        if(productMove.isEmpty())return null;
-        productMove.get().setProductId(productMovementDTO.getProductId());
+        System.out.println(productMovementDTO);
         if(productMovementDTO.getFromLocation() != null)
             productMove.get().setFromLocation(productMovementDTO.getFromLocation());
         if(productMovementDTO.getToLocation() != null)
@@ -127,14 +140,28 @@ public class ProductMovementServiceImp implements ProductMovementService {
     @Override
     public List<LocationProductsResponse> getLocationProducts(String loc) {
         List<ProductMovement> prods = productRepo.findByToLocation(loc).orElse(Collections.emptyList());
-        return prods.stream().map(prod ->
-                new LocationProductsResponse(
-                        prod.getId(),
-                        prod.getProductId(),
-                        prodRepo.findById(prod.getProductId()).get().getProductName(),
-                        prod.getQuantity()
-                )
-        ).toList();
+        List<LocationProductsResponse> locationProducts = new ArrayList<>();
+        for (ProductMovement productMovement : prods) {
+            Product product = prodRepo.findById(productMovement.getProductId()).orElse(null);
+            String productName = product != null ? product.getProductName() : "Unknown";
+            int quantity = productMovement.getQuantity();
+            if(locationProducts.isEmpty()){
+                locationProducts.add(new LocationProductsResponse(productMovement.getId(),productMovement.getProductId(),productName,quantity));
+            }else{
+                boolean found = false;
+                for (LocationProductsResponse locationProduct : locationProducts) {
+                    if (locationProduct.getProductId().equals(productMovement.getProductId())) {
+                        locationProduct.setQuantity(locationProduct.getQuantity() + quantity);
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    locationProducts.add(new LocationProductsResponse(productMovement.getId(),productMovement.getProductId(),productName,quantity));
+                }
+            }
+        }
+        return locationProducts;
     }
 
 
